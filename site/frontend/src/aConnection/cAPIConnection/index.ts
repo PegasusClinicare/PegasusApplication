@@ -6,8 +6,8 @@ const apiConnection = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: (
       import.meta.env.VITE_ENVIRONMENT === "Production" ? "16.16.60.12" :
-      import.meta.env.VITE_ENVIRONMENT === "Practice" ? "https://pegasus-backend-f4bi.onrender.com/api/v1/" :
-      "http://13.60.80.5:8080/api/v1/"
+      import.meta.env.VITE_ENVIRONMENT === "Practice" ? "https://pegasus-backend-h99r.onrender.com/api/v1/" :
+      "http://localhost:8080/api/v1/"
     ),
     credentials: "include"
   }),
