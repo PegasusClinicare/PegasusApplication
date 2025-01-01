@@ -40,7 +40,6 @@ appConnection.use(corsMiddleware({
       "http://13.60.80.5:8080",
     ] : process.env.ENVIRONMENT === "Practice" ?
     [
-      "https://pegasus-004.netlify.app",
       "https://pegaus-practice.netlify.app",
     ] : 
     [
