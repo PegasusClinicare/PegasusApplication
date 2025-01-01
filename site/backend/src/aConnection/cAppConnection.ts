@@ -30,14 +30,12 @@ import { singleImageRouter } from '../bLove/aMCR/cRoute/zFreestyleSample/aSingle
 
 const appConnection = express();
 
-// Random Comment
-
 // Third Party Middleware
 appConnection.use(morganMiddleware("dev"));
 appConnection.use(corsMiddleware({ 
   origin: process.env.ENVIRONMENT === "Production" ?
     [
-      "http://13.60.80.5:8080",
+      "http://pegasus-clinicare.s3-website.eu-north-1.amazonaws.com",
     ] : process.env.ENVIRONMENT === "Practice" ?
     [
       "https://pegaus-practice.netlify.app",
