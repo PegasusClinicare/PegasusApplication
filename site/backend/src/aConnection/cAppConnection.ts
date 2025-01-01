@@ -38,7 +38,7 @@ appConnection.use(corsMiddleware({
       "http://pegasus-clinicare.s3-website.eu-north-1.amazonaws.com",
     ] : process.env.ENVIRONMENT === "Practice" ?
     [
-      "https://pegaus-practice.netlify.app",
+      "https://pegasus-practice.netlify.app",
     ] : 
     [
       "http://localhost:5173",
