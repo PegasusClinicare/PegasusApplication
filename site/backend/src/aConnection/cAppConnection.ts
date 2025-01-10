@@ -36,19 +36,14 @@ appConnection.use(corsMiddleware({
   origin: process.env.ENVIRONMENT === "Production" ?
     [
       "http://13.60.80.5:8080",
-      "http://localhost:5173",
-      "http://localhost:5174",
     ] : process.env.ENVIRONMENT === "Practice" ?
     [
-      "https://pegasus-004.netlify.app",
-      "http://localhost:5173",
-      "http://localhost:5174",
-    ] : 
+      "https://pegasus-practice.netlify.app",
+    ] :  process.env.ENVIRONMENT === "Development" ?
     [
       "http://localhost:5173",
-      "http://localhost:5174",
-      "http://13.53.36.212:8080",
-    ], 
+      "http://localhost:5174"
+    ] : "http://localhost:5173",
   credentials: true 
 }));
 appConnection.use(bodyParserMiddleware.urlencoded({ extended: true }));
