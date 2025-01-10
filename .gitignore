@@ -1,5 +1,5 @@
 /site/backend/node_modules
-/site/backend/src/config/
+/site/backend/.env
 
 site/frontend/node_modules
 site/frontend/.env
