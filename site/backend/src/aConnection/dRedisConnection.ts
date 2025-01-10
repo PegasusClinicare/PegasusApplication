@@ -2,9 +2,9 @@ import Redis from 'ioredis'
 
 
 const redisClient = new Redis({
-  host: 'redis-19203.c305.ap-south-1-1.ec2.redns.redis-cloud.com',
-  port: 19203,
-  password: 'nRPHDBpR4mmvReRS4xkOlD4dyTxy1l21'
+  host: 'redis-12985.c81.us-east-1-2.ec2.redns.redis-cloud.com',
+  port: 12985,
+  password: 'nI7vpS63deSOiATOp5X3lZ6S8O79XUfq'
 })
 
 const redisConnection = (client: Redis = redisClient) => {

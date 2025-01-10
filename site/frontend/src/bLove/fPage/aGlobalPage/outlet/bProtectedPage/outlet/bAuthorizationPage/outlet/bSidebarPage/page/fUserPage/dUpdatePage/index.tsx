@@ -243,8 +243,8 @@ const UserUpdatePage = () => {
                             onChange={handleInputChange}
                             disabled={(
                               APICall.retrieveAPIResponse.data.retrieve.eEmail === "shraddha.kapoor@pegasus.com" || 
-                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "anushka.sharma@pegasus.com" || 
-                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "kangana.ranawat@pegasus.com"
+                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "vidya.balan@pegasus.com" || 
+                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "kangana.ranaut@pegasus.com"
                             )}
                           >
                             <option disabled selected >--Select--</option>
@@ -266,25 +266,29 @@ const UserUpdatePage = () => {
                             }
                           </Select>
 
-                          {
-                            (
-                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "shraddha.kapoor@pegasus.com" || 
-                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "anushka.sharma@pegasus.com" || 
-                              APICall.retrieveAPIResponse.data.retrieve.eEmail === "kangana.ranawat@pegasus.com"
-                            ) ? null : (
-                              <ButtonContainer>
-                                <SendMailButton onClick={handleSubmit}>
-                                  Edit Employee
-                                </SendMailButton>
-                                <SendMailButton disabled onClick={() => "handleSendMail"}>
-                                  Send Joining Mail
-                                </SendMailButton>
-                                <DeleteButton onClick={handleSubmit2}>
-                                  Delete Employee
-                                </DeleteButton>
-                              </ButtonContainer>
-                            )
-                          }
+                          <ButtonContainer>
+                            {
+                              (
+                                APICall.retrieveAPIResponse.data.retrieve.eEmail === "shraddha.kapoor@pegasus.com" || 
+                                APICall.retrieveAPIResponse.data.retrieve.eEmail === "vidya.balan@pegasus.com" || 
+                                APICall.retrieveAPIResponse.data.retrieve.eEmail === "kangana.ranaut@pegasus.com"
+                              ) ? null : (
+                                  <React.Fragment>
+                                    <SendMailButton onClick={handleSubmit}>
+                                      Edit Employee
+                                    </SendMailButton>
+                                    <DeleteButton onClick={handleSubmit2}>
+                                      Delete Employee
+                                    </DeleteButton>
+                                  </React.Fragment>
+                              )
+                            }
+
+                            <SendMailButton disabled onClick={() => "handleSendMail"}>
+                              Send Joining Mail
+                            </SendMailButton>
+                          </ButtonContainer>
+
                         </FormContainer>
                       </React.Fragment>
                     ) : "Backend Error"

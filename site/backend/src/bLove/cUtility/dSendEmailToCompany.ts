@@ -8,14 +8,14 @@ const sendEmailToCompany = async (option: {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'soup.beehive.corporation@gmail.com',
-        pass: 'icrc kdlc skdy quxp'
+        user: 'harshal.madgulkar725@gmail.com',
+        pass: 'hhsl qnuq rnog vftr'
       }
     });
   
     const mailOptions = {
-      from: "soup.beehive.corporation@gmail.com",
-      to: "soup.beehive.corporation@gmail.com",
+      from: "harshal.madgulkar725@gmail.com",
+      to: "pegasusintime@gmail.com",
       subject: option.subject,
       text: option.text
     };

@@ -68,13 +68,13 @@ const schema = new mongoose.Schema<UserModelType>({
   eFirstname: {
     type: String,
     maxlength: [25, "Name cannot exceed 25 characters"],
-    minlength: [5, "Name cannot be less than 5 characters"],
+    minlength: [3, "Name cannot be less than 3 characters"],
     trim: true
   },
   eLastname: {
     type: String,
     maxlength: [25, "Name cannot exceed 25 characters"],
-    minlength: [5, "Name cannot be less than 5 characters"],
+    minlength: [3, "Name cannot be less than 3 characters"],
     trim: true
   },
   eEmail: {
