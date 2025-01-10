@@ -7,7 +7,6 @@ import handleImageCreateForObject from "@/bLove/dUtility/aImageForObject/aHandle
 import handleImageUpdateForObject from "@/bLove/dUtility/aImageForObject/bHandleImageUpdateForObject";
 import handleImageDeleteForObject from "@/bLove/dUtility/aImageForObject/cHandleImageDeleteForObject";
 import fullRoute from "@/bLove/gRoute/bFullRoute";
-import firmBasedLicenseType from "@/bLove/hAsset/data/firmBasedLicenseType";
 import LessThanSign from '@/bLove/hAsset/icon/LessThanSign.png';
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +15,7 @@ import { Bounce, toast } from "react-toastify";
 import { Button, ContactInfo, ContactInput, Container, ContentWrapper, ContinueLink, Dropdown, Dropdown1, DropdownOption, ExpiryDate, FileInput, FileInputContainer, FileInputLabel, Form, HyperLink, Image, ImageWrapper, Input, InputHeading, IssueDate, MainHeading, PageLink, Para, UploadedFile } from "./style";
 import { FileIcon } from "lucide-react";
 import allCategoryType from "@/bLove/hAsset/data/allCategoryType";
+import serviceAPIEndpoint from "@/bLove/aAPI/aGlobalAPI/cProductManagementAPI/fServiceAPIEndpoints";
 
 
 const SignUpCComponent = () => {
@@ -30,6 +30,7 @@ const SignUpCComponent = () => {
   const userSignUp = userAPIEndpoint.useUserSignUpAPIMutation()
   const organizationCreate = organizationAPIEndpoint.useOrganizationCreateAPIMutation()
   const licenseCreate = licenseAPIEndpoint.useLicenseCreateAPIMutation()
+  const serviceUnauthenticatedList = serviceAPIEndpoint.useServiceUnauthenticatedListAPIQuery(null)
 
   const APICall = {
     submitAPITrigger: userSignUp[0],
@@ -40,6 +41,8 @@ const SignUpCComponent = () => {
 
     licenseSubmitAPITrigger: licenseCreate[0],
     licenseSubmitAPIResponse: licenseCreate[1],
+
+    serviceUnauthenticatedListAPIResponse: serviceUnauthenticatedList,
   }
   
   // Variable
@@ -265,7 +268,7 @@ const SignUpCComponent = () => {
             by<HyperLink href="#">Pegasus Clinicare</HyperLink>
           </Para>
           <Form onSubmit={handleSubmit}>
-            <InputHeading>Select License</InputHeading>
+            <InputHeading>Select License <em style={{ color: "tomato" }} >{location.state.formData?.type_of_firm ? `(Firm Type: ${location.state.formData?.type_of_firm})` : "(Select Firm Type for Options)"}</em></InputHeading>
             <Dropdown
               name="selectedLicense"
               value={formData.selectedLicense}
@@ -274,18 +277,28 @@ const SignUpCComponent = () => {
               <DropdownOption value="" disabled>
                 Select License
               </DropdownOption>
-              {
-                firmBasedLicenseType?.
-                  filter(each => each.firm === location.state.formData?.type_of_firm)[0]?.
-                  license?.
-                  map(each => (
-                    <DropdownOption
-                      key={each}
-                      value={each}
-                    >
-                      {each}
-                    </DropdownOption>
-                  ))
+              {APICall.serviceUnauthenticatedListAPIResponse.isLoading ? null : 
+                APICall.serviceUnauthenticatedListAPIResponse.isError ? null :
+                  APICall.serviceUnauthenticatedListAPIResponse.isSuccess ? (
+                    APICall.serviceUnauthenticatedListAPIResponse.data.success ? (
+                      APICall.serviceUnauthenticatedListAPIResponse.data.list.length > 0 ? (
+                        <React.Fragment>
+                          {
+                            APICall.serviceUnauthenticatedListAPIResponse.data.list?.
+                              filter((each: any) => each.dFormType === location.state.formData?.type_of_firm)?.
+                              map((each: any, index: any) => (
+                              <DropdownOption
+                                key={index}
+                                value={each.aTitle}
+                              >
+                                {each.aTitle}
+                              </DropdownOption>                                
+                            ))
+                          }
+                        </React.Fragment>
+                      ) : []
+                    ) : []
+                  ) : []
               }
             </Dropdown>
             <InputHeading>Enter License Number</InputHeading>

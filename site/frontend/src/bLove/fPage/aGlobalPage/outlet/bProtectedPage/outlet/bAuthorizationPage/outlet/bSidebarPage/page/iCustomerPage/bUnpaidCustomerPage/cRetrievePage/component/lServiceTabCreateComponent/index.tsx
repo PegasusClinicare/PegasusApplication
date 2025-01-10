@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AddButton, AddHeading, AddLicense, AddLicenseForm, ButtonTag, CancelButton, ContactInfo, ContactInput, Dropdown, DropdownOption, ExpiryDate, FileInput, FileInputContainer, FileInputLabel, Input2, InputHeading, IssueDate, Para } from '../../style';
 import apiResponseHandler from './extras/aAPIResponseHandler';
-import allLicenseType from '@/bLove/hAsset/data/allLicenseType';
+import serviceAPIEndpoint from '@/bLove/aAPI/aGlobalAPI/cProductManagementAPI/fServiceAPIEndpoints';
 
 
 const ServiceTabCreateComponent = (props: any) => {
@@ -14,6 +14,9 @@ const ServiceTabCreateComponent = (props: any) => {
     // ReduxCall,
     organizationID
   } = props;
+
+  // Emergency API Call
+  const serviceListAPI = serviceAPIEndpoint.useServiceListAPIQuery(null)
 
   // State Variable
   const [formData, setFormData] = useState({
@@ -70,11 +73,29 @@ const ServiceTabCreateComponent = (props: any) => {
             <DropdownOption selected disabled>
               Select License
             </DropdownOption>
-            {allLicenseType.map((each) => (
-              <DropdownOption key={each} value={each} >
-                {each}
-              </DropdownOption>
-            ))}
+            {serviceListAPI.isLoading ? null : 
+              serviceListAPI.isError ? null :
+                serviceListAPI.isSuccess ? (
+                  serviceListAPI.data.success ? (
+                    serviceListAPI.data.list.length > 0 ? (
+                      <React.Fragment>
+                        {
+                          serviceListAPI.data.list?.
+                            filter((each: any) => each.dFormType === APICall.retrieveAPIResponse.data?.retrieve?.dType)?.
+                            map((each: any, index: any) => (
+                            <DropdownOption
+                              key={index}
+                              value={each.aTitle}
+                            >
+                              {each.aTitle}
+                            </DropdownOption>                                
+                          ))
+                        }
+                      </React.Fragment>
+                    ) : []
+                  ) : []
+                ) : []
+            }
           </Dropdown>
           <InputHeading>Enter License Number</InputHeading>
           <Input2

@@ -12,9 +12,9 @@ import handleImageUpdateForList from "@/bLove/dUtility/bImageForList/bHandleImag
 import handleImageDeleteForList from "@/bLove/dUtility/bImageForList/cHandleImageDeleteForList";
 import allCategoryType from "@/bLove/hAsset/data/allCategoryType";
 import allFirmType from "@/bLove/hAsset/data/allFirmType";
-import firmBasedLicenseType from "@/bLove/hAsset/data/firmBasedLicenseType";
 import { FileIcon } from "lucide-react";
 import { AddNew, ButtonTwo, CityInfo, ContactInfo, ContactInput, Container, Dropdown, Dropdown1, DropdownOption, EmailInfo, ExpiryDate, FileInput, FileInputContainer, FileInputLabel, FinalTag, Form, Input, InputHeading, IssueDate, MainHeading, PanCard, PhoneInfo, PinCode, RemoveButton, StateInfo, statesAndCities, UploadedFile } from "./style";
+import serviceAPIEndpoint from "@/bLove/aAPI/aGlobalAPI/cProductManagementAPI/fServiceAPIEndpoints";
 
 
 const OrganizationCreatePage = () => {
@@ -50,6 +50,7 @@ const OrganizationCreatePage = () => {
   // API Call
   const organizationCreateAPI = organizationAPIEndpoint.useOrganizationCreateAPIMutation();
   const licenseCreateAPI = licenseAPIEndpoint.useLicenseCreateAPIMutation();
+  const serviceListAPI = serviceAPIEndpoint.useServiceListAPIQuery(null)
 
   const APICall = {
     createAPITrigger: organizationCreateAPI[0],
@@ -58,6 +59,8 @@ const OrganizationCreatePage = () => {
     // Relation... Muaaah....
     licenseCreateAPITrigger: licenseCreateAPI[0],
     licenseCreateAPIResponse: licenseCreateAPI[1],
+
+    serviceListAPIResponse: serviceListAPI,
 
   }
 
@@ -273,19 +276,30 @@ const OrganizationCreatePage = () => {
                   <DropdownOption selected disabled>
                     Select License
                   </DropdownOption>
-                  {
-                    firmBasedLicenseType?.
-                      filter(each => each.firm === formData?.dType)[0]?.
-                      license?.
-                      map(each => (
-                        <DropdownOption
-                          key={each}
-                          value={each}
-                        >
-                          {each}
-                        </DropdownOption>
-                      ))
+                  {APICall.serviceListAPIResponse.isLoading ? null : 
+                    APICall.serviceListAPIResponse.isError ? null :
+                      APICall.serviceListAPIResponse.isSuccess ? (
+                        APICall.serviceListAPIResponse.data.success ? (
+                          APICall.serviceListAPIResponse.data.list.length > 0 ? (
+                            <React.Fragment>
+                              {
+                                APICall.serviceListAPIResponse.data.list?.
+                                  filter((each: any) => each.dFormType === formData?.dType)?.
+                                  map((each: any, index: any) => (
+                                  <DropdownOption
+                                    key={index}
+                                    value={each.aTitle}
+                                  >
+                                    {each.aTitle}
+                                  </DropdownOption>                                
+                                ))
+                              }
+                            </React.Fragment>
+                          ) : []
+                        ) : []
+                      ) : []
                   }
+
                 </Dropdown1>
 
                 <ContactInfo>

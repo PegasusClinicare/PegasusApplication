@@ -11,7 +11,6 @@ import TopNavBarTwoComponent from "@/bLove/cComponent/aGlobalComponent/outlet/bP
 import SidebarNavigation from "@/bLove/cComponent/aGlobalComponent/outlet/bProtectedComponent/outlet/bAuthorizationComponent/outlet/bSidebarComponent/component/SidebarNavigation/SidebarNavigation";
 import allCategoryType from "@/bLove/hAsset/data/allCategoryType";
 import allFirmType from "@/bLove/hAsset/data/allFirmType";
-import allLicenseType from "@/bLove/hAsset/data/allLicenseType";
 import apiResponseHandler from "./extras/aAPIResponseHandler";
 import { AddButton, AddHeading, AddService, AddServiceForm, CancelButton, DropTag, FeeTag, Input, InputHeading, InputTag, InputTag2, InputTag3, LeftContainer, MainContainer, ownLoanOptions, RightContainer, Select, Select2, ServiceSubContainer, SubmitTag, ValidityTag } from "./style";
 import fullRoute from "@/bLove/gRoute/bFullRoute";
@@ -92,18 +91,13 @@ const ServiceCreatePage = () => {
 
                   <InputTag>
                     <InputHeading>Form Number</InputHeading>
-                    <Select
+                    <Input
+                      type="text"
+                      placeholder="Enter Form Number"
                       id="formNumber"
                       name="dFormNumber" 
                       onChange={(event => handleInputChange(event))}
-                    >
-                      <option selected disabled>--Select Form Number--</option>
-                      {allLicenseType.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </Select>
+                    />
                   </InputTag>
 
                   <DropTag>

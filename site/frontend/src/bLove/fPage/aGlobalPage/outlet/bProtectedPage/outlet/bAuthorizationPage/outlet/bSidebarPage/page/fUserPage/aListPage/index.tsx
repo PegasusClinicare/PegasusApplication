@@ -25,6 +25,7 @@ const UserListPage = () => {
   const [activeTab, setActiveTab] = useState(location.state?.role ? "Roles" : "Employees");
   const [searchInput1, setSearchInput1] = useState("")
   const [searchInput2, setSearchInput2] = useState("")
+  const [searchInput3, setSearchInput3] = useState("")
 
   // API Call
   const APICall = {
@@ -59,6 +60,9 @@ const UserListPage = () => {
             <NavLinks>
               <Navigation active={activeTab === "Employees"} onClick={() => setActiveTab("Employees")}>
                 Employees
+              </Navigation>
+              <Navigation active={activeTab === "Customers"} onClick={() => setActiveTab("Customers")}>
+                Customers
               </Navigation>
               <Navigation active={activeTab === "Roles"} onClick={() => setActiveTab("Roles")}>
                 Roles
@@ -104,6 +108,81 @@ const UserListPage = () => {
                                 {
                                   APICall.userListAPIResponse.data.list?.
                                     filter((each: any) => each.eFirstname?.toLowerCase().includes(searchInput1?.toLowerCase())).
+                                    filter((each: any) => each.cRole?.aTitle !== "Pegasus Customer").
+                                    map((each: any, index: any) => (
+                                    <tr key={index}>
+                                      <TableBody>{each.eFirstname}</TableBody>
+                                      <TableBody>{each.eMobile}</TableBody>
+                                      <TableBody>{each.eEmail}</TableBody>
+                                      <TableBody>{each.bCreatedAt}</TableBody>
+                                      <TableBody>{each.cRole?.aTitle}</TableBody>
+                                      <TableBody>
+                                        <ButtonLink3
+                                          onClick={() => navigate(`${fullRoute.aGlobalRoute.bProtectedRoute.bAuthorizationRoute.bSidebarRoute.fUserRoute.dUpdateRoute}/${each._id}`)}
+                                        >Change Role</ButtonLink3>
+                                      </TableBody>
+                                    </tr> 
+                                  ))
+                                }
+                              </React.Fragment>
+                            ) : []
+                          ) : []
+                        ) : []
+                    }
+
+                  </tbody>
+                </Table>
+
+                {(APICall.userListAPIResponse.isLoading || APICall.userListAPIResponse.isFetching) ? <LoaderComponent /> :
+                  APICall.userListAPIResponse.isError ? <ErrorComponent message="Error..." /> :
+                  (APICall.userListAPIResponse.data?.list?.
+                    filter((each: any) => each.eFirstname?.toLowerCase().includes(searchInput1?.toLowerCase())).
+                    length === 0) ? <ErrorComponent message="No items here..." /> : null
+                }
+
+              </>
+            )}
+            {activeTab === "Customers" && (
+              <>
+                <Form>
+                  <Input
+                    type="text"
+                    placeholder="Search Your Customer by Name"
+                    value={searchInput3}
+                    onChange={(event) => setSearchInput3(event.target.value)}
+                  />
+                  <SearchButton type="button" onClick={() => APICall.userListAPIResponse.refetch()} >
+                    <RefreshCwIcon style={{ width: "20px", height: "20px", marginRight: "10px" }}  />
+                    <Para>Refresh</Para>
+                  </SearchButton>
+                  {/* <ButtonLink2 to={fullRoute.aGlobalRoute.bProtectedRoute.bAuthorizationRoute.bSidebarRoute.fUserRoute.bCreateRoute}>
+                    <Image3 src={PlusSignIcon} alt="Add" />
+                    Add
+                  </ButtonLink2> */}
+                </Form>
+                <Table>
+                  <thead>
+                    <tr>
+                      <TableHeading>Employee Name</TableHeading>
+                      <TableHeading>Contact</TableHeading>
+                      <TableHeading>Email</TableHeading>
+                      <TableHeading>Joined On</TableHeading>
+                      <TableHeading>Role</TableHeading>
+                      <TableHeading>Actions</TableHeading>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {(APICall.userListAPIResponse.isLoading || APICall.userListAPIResponse.isFetching) ? null : 
+                      APICall.userListAPIResponse.isError ? null :
+                        APICall.userListAPIResponse.isSuccess ? (
+                          APICall.userListAPIResponse.data.success ? (
+                            APICall.userListAPIResponse.data.list.length > 0 ? (
+                              <React.Fragment>
+                                {
+                                  APICall.userListAPIResponse.data.list?.
+                                    filter((each: any) => each.eFirstname?.toLowerCase().includes(searchInput3?.toLowerCase())).
+                                    filter((each: any) => each.cRole?.aTitle === "Pegasus Customer").
                                     map((each: any, index: any) => (
                                     <tr key={index}>
                                       <TableBody>{each.eFirstname}</TableBody>

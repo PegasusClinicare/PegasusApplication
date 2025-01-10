@@ -12,13 +12,21 @@ const serviceAPIEndpoint = apiConnection.injectEndpoints({
       providesTags: ["serviceList"]
     }),
 
+    serviceUnauthenticatedListAPI: builder.query({
+      query: () => ({
+        url: `service/unauthenticated-list/`,
+        method: "GET"
+      }),
+      providesTags: ["serviceList"]
+    }),
+
     serviceCreateAPI: builder.mutation({
       query: (data) => ({
         url: `service/create/`,
         method: "POST",
         body: data.body
       }),
-      invalidatesTags: ["serviceList"]
+      invalidatesTags: ["serviceList", "serviceUnauthenticatedList"]
     }),
 
     serviceRetrievePI: builder.query({
@@ -37,6 +45,7 @@ const serviceAPIEndpoint = apiConnection.injectEndpoints({
       }),
       invalidatesTags: (_result: any, _error: any, data: any) => [
         { type: "serviceList" },
+        { type: "serviceUnauthenticatedList" },
         { type: "serviceRetrieve", id: data.params._id },
       ],
     }),
@@ -49,6 +58,7 @@ const serviceAPIEndpoint = apiConnection.injectEndpoints({
       }),
       invalidatesTags: (_result: any, _error: any, data: any) => [
         { type: "serviceList" },
+        { type: "serviceUnauthenticatedList" },
         { type: "serviceRetrieve", id: data.params._id },
       ],
     }),

@@ -4,13 +4,13 @@ import handleImageCreateForObject from '@/bLove/dUtility/aImageForObject/aHandle
 import handleImageUpdateForObject from '@/bLove/dUtility/aImageForObject/bHandleImageUpdateForObject';
 import handleImageDeleteForObject from '@/bLove/dUtility/aImageForObject/cHandleImageDeleteForObject';
 import allCategoryType from '@/bLove/hAsset/data/allCategoryType';
-import firmBasedLicenseType from '@/bLove/hAsset/data/firmBasedLicenseType';
 import { FileIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { ContactInfo1 } from '../../../../../aOrganizationPage/cRetrievePage/style';
 import { Dropdown1 } from '../../../../../bLicensePage/bCreatePage/style';
 import { AddButton, AddHeading, AddLicense, AddLicenseForm, ButtonBack, ButtonTag, CancelButton, ContactInfo, ContactInput, Dropdown, DropdownOption, ExpiryDate, FileInput, FileInputContainer, FileInputLabel, FirstRow, Input2, InputHeading, IssueDate, Para, UploadedFile } from '../../style';
 import apiResponseHandler from './extras/aAPIResponseHandler';
+import serviceAPIEndpoint from '@/bLove/aAPI/aGlobalAPI/cProductManagementAPI/fServiceAPIEndpoints';
 
 
 const LicenseTabUpdateComponent = (props: any) => {
@@ -23,6 +23,9 @@ const LicenseTabUpdateComponent = (props: any) => {
     // ReduxCall,
     organizationID                                                             
   } = props
+
+  // Emergency API Call
+  const serviceListAPI = serviceAPIEndpoint.useServiceListAPIQuery(null)
 
   // State Variable
   const [fileLoading, setFileLoading] = useState(false)
@@ -110,19 +113,29 @@ const LicenseTabUpdateComponent = (props: any) => {
                         <DropdownOption selected disabled>
                           Select License
                         </DropdownOption>
-                        {
-                          firmBasedLicenseType?.
-                            filter(each => each.firm === APICall.retrieveAPIResponse.data?.retrieve?.dType)[0]?.
-                            license?.
-                            map(each => (
-                              <DropdownOption
-                                key={each}
-                                value={each}
-                                selected={each === formData.dSelectedLicense}
-                              >
-                                {each}
-                              </DropdownOption>
-                            ))
+                        {serviceListAPI.isLoading ? null : 
+                          serviceListAPI.isError ? null :
+                            serviceListAPI.isSuccess ? (
+                              serviceListAPI.data.success ? (
+                                serviceListAPI.data.list.length > 0 ? (
+                                  <React.Fragment>
+                                    {
+                                      serviceListAPI.data.list?.
+                                        filter((each: any) => each.dFormType === APICall.retrieveAPIResponse.data?.retrieve?.dType)?.
+                                        map((each: any, index: any) => (
+                                        <DropdownOption
+                                          key={index}
+                                          value={each.aTitle}
+                                          selected={each.aTitle === formData.dSelectedLicense}
+                                        >
+                                          {each.aTitle}
+                                        </DropdownOption>                                
+                                      ))
+                                    }
+                                  </React.Fragment>
+                                ) : []
+                              ) : []
+                            ) : []
                         }
                       </Dropdown>
                       <InputHeading>Enter License Number</InputHeading>

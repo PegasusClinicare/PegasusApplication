@@ -16,10 +16,10 @@ import handleImageUpdateForObject from "@/bLove/dUtility/aImageForObject/bHandle
 import fullRoute from "@/bLove/gRoute/bFullRoute";
 import LoaderComponent from "@/bLove/cComponent/aGlobalComponent/component/aLoaderComponent";
 import ErrorComponent from "@/bLove/cComponent/aGlobalComponent/component/bErrorComponent";
-import firmBasedLicenseType from "@/bLove/hAsset/data/firmBasedLicenseType";
 import { Dropdown1 } from "../bCreatePage/style";
 import allCategoryType from "@/bLove/hAsset/data/allCategoryType";
 import { FileIcon } from "lucide-react";
+import serviceAPIEndpoint from "@/bLove/aAPI/aGlobalAPI/cProductManagementAPI/fServiceAPIEndpoints";
 
 
 const LicenseUpdatePage = () => {
@@ -54,6 +54,7 @@ const LicenseUpdatePage = () => {
   const licenseRetrieveAPI = licenseAPIEndpoint.useLicenseRetrievePIQuery({ params: { _id: id } });
   const licenseUpdateAPI = licenseAPIEndpoint.useLicenseUpdateAPIMutation();
   const organziationListAPI = organizationAPIEndpoint.useOrganizationListAPIQuery(null)
+  const serviceListAPI = serviceAPIEndpoint.useServiceListAPIQuery(null)
 
   const APICall = {
     retrieveAPIResponse: licenseRetrieveAPI,
@@ -62,6 +63,7 @@ const LicenseUpdatePage = () => {
 
     // Requirements... Muaaah...
     organizationListAPIResponse: organziationListAPI,
+    serviceListAPIResponse: serviceListAPI,
     
   }  
 
@@ -182,19 +184,29 @@ const LicenseUpdatePage = () => {
                             <DropdownOption value="" disabled>
                               Select License
                             </DropdownOption>
-                            {
-                              firmBasedLicenseType?.
-                                filter(each => each.firm === organziationType)[0]?.
-                                license?.
-                                map(each => (
-                                  <DropdownOption
-                                    key={each}
-                                    value={each}
-                                    selected={each === formData.dSelectedLicense}
-                                  >
-                                    {each}
-                                  </DropdownOption>
-                                ))
+                            {APICall.serviceListAPIResponse.isLoading ? null : 
+                              APICall.serviceListAPIResponse.isError ? null :
+                                APICall.serviceListAPIResponse.isSuccess ? (
+                                  APICall.serviceListAPIResponse.data.success ? (
+                                    APICall.serviceListAPIResponse.data.list.length > 0 ? (
+                                      <React.Fragment>
+                                        {
+                                          APICall.serviceListAPIResponse.data.list?.
+                                            filter((each: any) => each.dFormType === organziationType)?.
+                                            map((each: any, index: any) => (
+                                            <DropdownOption
+                                              key={index}
+                                              value={each.aTitle}
+                                              selected={each.aTitle === formData.dSelectedLicense}
+                                            >
+                                              {each.aTitle}
+                                            </DropdownOption>                                
+                                          ))
+                                        }
+                                      </React.Fragment>
+                                    ) : []
+                                  ) : []
+                                ) : []
                             }
                           </Dropdown>
                           <InputHeading>Enter License Number</InputHeading>

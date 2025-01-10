@@ -22,7 +22,7 @@ const apiConnection = createApi({
     "productList", "categoryList", "tagList", 
     "organizationList", "organizationRetrieve",
     "licenseList", "licenseRetrieve",
-    "serviceList", "serviceRetrieve",
+    "serviceList", "serviceUnauthenticatedList", "serviceRetrieve",
     "documentList", "documentRetrieve",
     "inspectionList", "inspectionRetrieve",
     "enrolledServiceList", "enrolledServiceRetrieve",

@@ -17,6 +17,14 @@ router.route("/list").get(
   serviceController().list
 );
 
+router.route("/unauthenticated-list").get(
+  // rateLimiterMiddleware("service-list", 60, 10), 
+  // authenticationMiddleware,
+  // checkCacheMiddleware("service-list", "Service", "List"), 
+  serviceListValidation(), validatorMiddleware, 
+  serviceController().list
+);
+
 router.route("/create").post(
   rateLimiterMiddleware("service-create", 60, 10), 
   authenticationMiddleware,

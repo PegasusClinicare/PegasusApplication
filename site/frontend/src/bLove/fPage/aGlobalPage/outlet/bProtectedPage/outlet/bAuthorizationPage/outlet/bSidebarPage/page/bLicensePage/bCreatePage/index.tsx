@@ -15,9 +15,9 @@ import handleImageUpdateForObject from "@/bLove/dUtility/aImageForObject/bHandle
 import handleImageDeleteForObject from "@/bLove/dUtility/aImageForObject/cHandleImageDeleteForObject";
 import fullRoute from "@/bLove/gRoute/bFullRoute";
 import allCategoryType from "@/bLove/hAsset/data/allCategoryType";
-import firmBasedLicenseType from "@/bLove/hAsset/data/firmBasedLicenseType";
 import { FileIcon } from "lucide-react";
 import { ButtonContainer, CancelButton, ContactInput, Container, Dropdown, Dropdown1, DropdownOption, ExpiryDate, FileInput, FileInputContainer, FileInputLabel, FinalTag, Form, Input, InputHeading, IssueDate, MainHeading, SubmitButton, UploadedFile } from "./style";
+import serviceAPIEndpoint from "@/bLove/aAPI/aGlobalAPI/cProductManagementAPI/fServiceAPIEndpoints";
 
 
 const LicenseCreatePage = () => {
@@ -49,14 +49,16 @@ const LicenseCreatePage = () => {
 
   // API Call
   const licenseAPI = licenseAPIEndpoint.useLicenseCreateAPIMutation();
-  const organziationAPI = organizationAPIEndpoint.useOrganizationListAPIQuery(null)
+  const organziationListAPI = organizationAPIEndpoint.useOrganizationListAPIQuery(null)
+  const serviceListAPI = serviceAPIEndpoint.useServiceListAPIQuery(null)
 
   const APICall = {
     createAPITrigger: licenseAPI[0],
     createAPIResponse: licenseAPI[1],
 
     // Requirements... Muaaah...
-    organizationListAPIResponse: organziationAPI,
+    organizationListAPIResponse: organziationListAPI,
+    serviceListAPIResponse: serviceListAPI,
 
   }
 
@@ -141,18 +143,28 @@ const LicenseCreatePage = () => {
                   <DropdownOption value="" disabled>
                     Select License
                   </DropdownOption>
-                  {
-                    firmBasedLicenseType?.
-                      filter(each => each.firm === organziationType)[0]?.
-                      license?.
-                      map(each => (
-                        <DropdownOption
-                          key={each}
-                          value={each}
-                        >
-                          {each}
-                        </DropdownOption>
-                      ))
+                  {APICall.serviceListAPIResponse.isLoading ? null : 
+                    APICall.serviceListAPIResponse.isError ? null :
+                      APICall.serviceListAPIResponse.isSuccess ? (
+                        APICall.serviceListAPIResponse.data.success ? (
+                          APICall.serviceListAPIResponse.data.list.length > 0 ? (
+                            <React.Fragment>
+                              {
+                                APICall.serviceListAPIResponse.data.list?.
+                                  filter((each: any) => each.dFormType === organziationType)?.
+                                  map((each: any, index: any) => (
+                                  <DropdownOption
+                                    key={index}
+                                    value={each.aTitle}
+                                  >
+                                    {each.aTitle}
+                                  </DropdownOption>                                
+                                ))
+                              }
+                            </React.Fragment>
+                          ) : []
+                        ) : []
+                      ) : []
                   }
                 </Dropdown>
                 <InputHeading>Enter License Number</InputHeading>
