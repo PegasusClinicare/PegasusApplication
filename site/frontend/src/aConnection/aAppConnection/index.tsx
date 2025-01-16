@@ -103,7 +103,7 @@ const AppConnection = () => {
   return (
     <React.Fragment>
       {/* AppConnection */}
-      <Helmet><title>Pegasus</title></Helmet>
+      <Helmet><title>In Time Alerts</title></Helmet>
       <ToastContainer />
 
       <Suspense fallback={<ErrorComponent message={"Suspense Loading..."} />} >
