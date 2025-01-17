@@ -271,7 +271,7 @@ const TopNavBarTwoComponent = () => {
               <ImageContent src={Payment} alt="" />
               <TextContent>Payments & Invoices</TextContent>
             </ProfileContent>
-            <ProfileContent to="">
+            <ProfileContent to="https://pegasusclinicare.com/">
               <ImageContent src={About} alt="" />
               <TextContent>About</TextContent>
             </ProfileContent>
