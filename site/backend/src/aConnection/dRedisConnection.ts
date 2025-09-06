@@ -3,15 +3,15 @@ import Redis from 'ioredis'
 
 const redisClient = new Redis(process.env.ENVIRONMENT === "Production" ? (
   {
-    host: 'redis-18114.c330.asia-south1-1.gce.redns.redis-cloud.com',
-    port: 18114,
-    password: 'aWQV21nR5WWed5pElx8UjnJu3WPfTNVX'
+    host: 'redis-19708.c301.ap-south-1-1.ec2.redns.redis-cloud.com',
+    port: 19708,
+    password: '1vlBGdXUIVXFEVkegOnXtcWFPMDAEnwI'
   }
 ) : (
   {
-    host: 'redis-18114.c330.asia-south1-1.gce.redns.redis-cloud.com', // not working yet. create on pegasusclinicare 
-    port: 18114,
-    password: 'aWQV21nR5WWed5pElx8UjnJu3WPfTNVX'
+    host: 'redis-19708.c301.ap-south-1-1.ec2.redns.redis-cloud.com', // not working yet. create on pegasusclinicare 
+    port: 19708,
+    password: '1vlBGdXUIVXFEVkegOnXtcWFPMDAEnwI'
   }
 ))
 
